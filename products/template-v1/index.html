@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YOUR_BRAND_NAME — Web, Software &amp; AI Solutions in Kano</title>
+  <meta name="description" content="Kano-based YOUR_BRAND_NAME builds websites, management systems, AI apps, automation and digital marketing for ambitious businesses." />
+  <meta name="keywords" content="web development Kano, software development Nigeria, AI solutions, management systems, automation, UI/UX design, digital transformation, cloud, 3D websites, branding, digital marketing, YOUR_BRAND_NAME" />
+  <meta name="author" content="YOUR_BRAND_NAME" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#050B18" media="(prefers-color-scheme: dark)" />
+  <link rel="icon" type="image/png" sizes="96x96" href="logo-mark.png" />
+  <link rel="canonical" href="https://mercurealahmad.qzz.io/" />
+  <meta property="og:image" content="logo-mark.png" />
+  <meta name="application-name" content="YOUR_BRAND_NAME" />
+  <meta name="geo.region" content="NG-KN" />
+  <meta name="geo.placename" content="Kano" />
+  <meta property="og:title" content="MercuReal — Websites, Software & AI" />
+  <meta property="og:description" content="Premium digital systems for ambitious businesses. A digital place for all." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org","@graph":[
+      {"@type":"ProfessionalService","@id":"https://mercurealahmad.qzz.io/#business","name":"YOUR_BRAND_NAME","description":"Technology, software and digital solutions for ambitious businesses in YOUR_LOCATION.","email":"YOUR_EMAIL","telephone":["+2347060745916","+2347083947529"],"address":{"@type":"PostalAddress","addressLocality":"Kano","addressRegion":"NG-KN","addressCountry":"NG"},"url":"https://mercurealahmad.qzz.io/","knowsAbout":["Web Development","Software Development","AI Solutions","UI/UX Design","Digital Transformation","Cloud Technology","3D Web Experiences","Branding","SEO","Marketing"]}
+    ]
+  }
+  </script>
+  <script>p5.disableFriendlyErrors = true;</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-deep: #060a12;
+      --bg-card: rgba(255,255,255,0.035);
+      --bg-card-border: rgba(255,255,255,0.08);
+      --text-main: #f2efe9;
+      --text-muted: rgba(242,239,233,0.52);
+      --accent: #e0b060;
+      --accent-deep: #c49a40;
+      --accent-glow: rgba(224,176,96,0.3);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; background: var(--bg-deep); color: var(--text-main); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+    /* 3D Canvas */
+    #canvas-container { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    #canvas-container canvas { display: block; width: 100vw; height: 100vh; }
+
+    /* Mouse tracking glow */
+    .glow-cursor { position: fixed; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(224,176,96,0.06) 0%, transparent 70%); pointer-events: none; z-index: 5; transform: translate(-50%, -50%); transition: opacity 0.3s ease; opacity: 0; }
+    .glow-cursor.active { opacity: 1; }
+
+    /* Page layout */
+    .page { position: relative; z-index: 10; max-width: 680px; margin: 0 auto; padding: 3rem 1.5rem 6rem; display: flex; flex-direction: column; gap: 3.5rem; }
+
+    /* Header glass pill */
+    .top-bar { display: flex; align-items: center; justify-content: space-between; padding: 0.3rem 0.3rem 0.3rem 0.3rem; border-radius: 9999px; background: var(--bg-card); border: 1px solid var(--bg-card-border); backdrop-filter: blur(18px) saturate(120%); -webkit-backdrop-filter: blur(18px) saturate(120%); box-shadow: 0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06); }
+    .profile-link { display: flex; align-items: center; gap: 0.6rem; padding: 0.2rem 0.4rem; border-radius: 9999px; text-decoration: none; color: var(--text-main); transition: background 0.2s ease; }
+    .profile-link:hover { background: rgba(255,255,255,0.06); }
+    .avatar-wrap { width: 36px; height: 36px; border-radius: 50%; overflow: hidden; border: 1.5px solid rgba(255,255,255,0.12); box-shadow: 0 0 0 2px rgba(255,255,255,0.04); flex-shrink: 0; }
+    .avatar-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .brand-name-text { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: -0.02em; }
+
+    /* Tag pill */
+    .tag-pill { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.55rem 1.1rem; border-radius: 9999px; background: var(--bg-card); border: 1px solid var(--bg-card-border); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); color: var(--text-muted); font-size: 0.85rem; letter-spacing: 0.01em; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent-glow); flex-shrink: 0; }
+
+    /* Hero */
+    .hero h1 { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: clamp(2.8rem, 10vw, 5.2rem); line-height: 1.02; letter-spacing: -0.04em; color: var(--text-main); text-wrap: balance; text-shadow: 0 4px 60px rgba(224,176,96,0.15); }
+    .hero h1 .accent-word { color: var(--accent); text-shadow: 0 2px 30px var(--accent-glow); }
+    .hero .subtitle { color: var(--text-muted); font-size: 1.05rem; line-height: 1.55; max-width: 540px; text-wrap: pretty; font-weight: 300; }
+
+    /* Buttons */
+    .cta-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.85rem 1.8rem; border-radius: 9999px; font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 0.92rem; letter-spacing: -0.01em; text-decoration: none; transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94); border: 1px solid transparent; }
+    .btn-primary { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%); color: #0b0d14; box-shadow: 0 8px 28px rgba(224,176,96,0.35), inset 0 1px 0 rgba(255,255,255,0.2); }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(224,176,96,0.45), inset 0 1px 0 rgba(255,255,255,0.25); }
+    .btn-secondary { background: var(--bg-card); color: var(--text-main); border-color: var(--bg-card-border); }
+    .btn-secondary:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); transform: translateY(-2px); }
+
+    /* Feature checklist */
+    .features { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem 1.25rem; }
+    .feature { display: flex; align-items: center; gap: 0.55rem; color: var(--text-main); font-size: 0.9rem; font-weight: 400; }
+    .feature svg { width: 16px; height: 16px; color: var(--accent); flex-shrink: 0; }
+
+    /* Tiles section */
+    .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .tile { display: block; padding: 1.75rem; border-radius: 20px; background: var(--bg-card); border: 1px solid var(--bg-card-border); text-decoration: none; color: inherit; transition: all 0.3s ease; position: relative; overflow: hidden; }
+    .tile::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 30% 30%, rgba(224,176,96,0.06) 0%, transparent 50%); pointer-events: none; transition: opacity 0.3s; opacity: 0; }
+    .tile:hover { border-color: rgba(224,176,96,0.35); transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
+    .tile:hover::before { opacity: 1; }
+    .tile h3 { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+    .tile p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; }
+    .tile .tile-tag { display: inline-block; margin-top: 0.75rem; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    /* Cartoon character */
+    .cartoon-wrap { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 15; width: 120px; height: 120px; pointer-events: none; }
+    .cartoon { width: 100%; height: 100%; position: relative; }
+    .cartoon-body { width: 80px; height: 100px; background: var(--accent); border-radius: 50% 50% 45% 45%; margin: 0 auto; position: relative; box-shadow: 0 8px 20px rgba(224,176,96,0.35); animation: bob 3s ease-in-out infinite; }
+    .cartoon-body::before { content: ''; position: absolute; top: -8px; left: 50%; transform: translateX(-50%); width: 30px; height: 30px; background: var(--accent-deep); border-radius: 50%; }
+    .cartoon-eyes { position: absolute; top: 32px; left: 50%; transform: translateX(-50%); display: flex; gap: 14px; }
+    .cartoon-eye { width: 16px; height: 16px; background: #060a12; border-radius: 50%; position: relative; }
+    .cartoon-eye::after { content: ''; position: absolute; top: 3px; left: 3px; width: 4px; height: 4px; background: var(--accent); border-radius: 50%; }
+    .cartoon-hands { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); width: 100px; height: 50px; pointer-events: none; transition: all 0.5s ease; }
+    .cartoon-hand { position: absolute; width: 28px; height: 36px; background: #f2efe9; border-radius: 12px; top: 0; transition: all 0.5s ease; }
+    .cartoon-hand.left { left: 8px; transform: rotate(-15deg); }
+    .cartoon-hand.right { right: 8px; transform: rotate(15deg); }
+    .cartoon-wrap.typing-active .cartoon-hand { top: -40px; }
+    .cartoon-wrap.typing-active .cartoon-hand.left { transform: rotate(-25deg) translateY(-30px); }
+    .cartoon-wrap.typing-active .cartoon-hand.right { transform: rotate(25deg) translateY(-30px); }
+    @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+    /* Footer socials */
+    .socials { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+    .socials a { color: var(--text-muted); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; position: relative; }
+    .socials a:hover { color: var(--text-main); }
+    .socials a::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1px; background:var(--accent); transition:width 0.3s ease; }
+    .socials a:hover::after { width:100%; }
+
+    /* Mobile */
+    @media (max-width: 640px) {
+      .page { padding: 2rem 1.15rem 4rem; gap: 2.5rem; }
+      .hero h1 { font-size: 2.8rem; }
+      .tiles { grid-template-columns: 1fr; }
+      .cartoon-wrap { width: 90px; height: 90px; bottom: 1rem; right: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="canvas-container"></div>
+  <div class="glow-cursor" id="glow"></div>
+
+  <main class="page" aria-label="MercuReal landing page">
+
+    <!-- Header pill -->
+    <nav class="top-bar" aria-label="Brand and actions">
+      <a href="#" class="profile-link" aria-label="MercuReal home">
+        <span class="avatar-wrap"><img src="logo-mark.png" alt="YOUR_BRAND_NAME logo" loading="eager" /></span>
+        <span class="brand-name-text">MercuReal</span>
+      </a>
+      <div class="cta-row" style="margin:0; gap:0.5rem;">
+        <a class="btn btn-secondary" href="#contact" style="padding:0.5rem 1rem; font-size:0.78rem;" aria-label="Contact">Contact</a>
+      </div>
+    </nav>
+
+    <!-- Tag -->
+    <div class="tag-pill"><span class="dot"></span> Digital systems for a smarter future</div>
+
+    <!-- Hero -->
+    <section class="hero" aria-label="Headline">
+      <h1>Websites, software and AI systems for ambitious <span class="accent-word">businesses</span></h1>
+      <p class="subtitle">Technology, software and digital solutions designed to help ambitious businesses operate smarter, grow faster, and compete in a digital world — a digital place for all.</p>
+      <nav class="cta-row" aria-label="Contact actions">
+        <a class="btn btn-primary" href="mailto:YOUR_EMAIL" aria-label="Email YOUR_EMAIL">Start a project</a>
+        <a class="btn btn-secondary" href="https://wa.me/2347083947529" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp message">Explore capabilities</a>
+      </nav>
+    </section>
+
+    <!-- Features -->
+    <section class="features" aria-label="Capabilities">
+      <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Product-minded</div>
+      <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Built to scale</div>
+      <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Human-led</div>
+    </section>
+
+    <!-- Tiles linking to pages -->
+    <section aria-label="Services" style="margin-top:1rem;">
+      <h2 style="font-family:'Outfit',sans-serif; font-size:1.4rem; font-weight:700; letter-spacing:-0.03em; margin-bottom:1.25rem;">Services</h2>
+      <div class="tiles">
+        <a class="tile" href="pages/portfolio.html" aria-label="Portfolio services">
+          <h3>Portfolio</h3>
+          <p>Selected work across websites, software platforms, AI integrations, and digital products built for ambitious clients.</p>
+          <span class="tile-tag">View work →</span>
+        </a>
+        <a class="tile" href="pages/capabilities.html" aria-label="Capabilities services">
+          <h3>Capabilities</h3>
+          <p>Full-stack web development, AI system design, performance optimization, SEO engineering, and product strategy.</p>
+          <span class="tile-tag">Learn more →</span>
+        </a>
+        <a class="tile" href="pages/contact.html" aria-label="Contact services" style="grid-column: span 1;">
+          <h3>Book Strategy Call</h3>
+          <p>60-min AI / digital transformation session — $150.</p>
+        </a>
+        <a class="tile" href="$1000-plan.md" aria-label="First $1,000 plan" style="background: linear-gradient(135deg, rgba(224,176,96,0.08), rgba(224,176,96,0.02)); border-color: rgba(224,176,96,0.35);">
+          <h3>First $1,000 Plan</h3>
+          <p>Our journey: templates, consulting, 3D packages → $1,045+.</p>
+        </a>
+        <a class="tile" href="pages/contact.html" aria-label="Contact services" style="grid-column: span 2;">
+          <h3>Start a Project</h3>
+          <p>Let's discuss how MercuReal can build premium digital systems for your business. Email or WhatsApp available.</p>
+          <span class="tile-tag">Get in touch →</span>
+        </a>
+        <a class="tile" href="pages/web-development.html" aria-label="Web development services">
+          <h3>Web Development</h3>
+          <p>Full-stack engineering, performance optimization, and premium user interfaces built for scale.</p>
+          <span class="tile-tag">Read more →</span>
+        </a>
+        <a class="tile" href="pages/ai-systems.html" aria-label="AI systems services">
+          <h3>AI Systems</h3>
+          <p>Machine learning integration, real-time predictions, and intelligent automation for business growth.</p>
+          <span class="tile-tag">Read more →</span>
+        </a>
+      </div>
+    </section>
+
+    <footer aria-label="Social links">
+      <nav class="socials" aria-label="Social links">
+        <a href="#" aria-label="Portfolio">Portfolio</a>
+        <a href="#" aria-label="GitHub">GitHub</a>
+        <a href="#" aria-label="LinkedIn">LinkedIn</a>
+        <a href="#" aria-label="Instagram">Instagram</a>
+      </nav>
+    </footer>
+
+    <!-- Cartoon character -->
+    <aside class="cartoon-wrap" id="cartoonWrap" aria-label="Funny cartoon character that covers eyes when typing">
+      <div class="cartoon">
+        <div class="cartoon-body"></div>
+        <div class="cartoon-eyes">
+          <div class="cartoon-eye"></div>
+          <div class="cartoon-eye"></div>
+        </div>
+        <div class="cartoon-hands">
+          <div class="cartoon-hand left"></div>
+          <div class="cartoon-hand right"></div>
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <script>
+    // === Mouse tracking glow ===
+    const glow = document.getElementById('glow');
+    document.addEventListener('mousemove', (e) => {
+      glow.style.left = e.clientX + 'px';
+      glow.style.top = e.clientY + 'px';
+      glow.classList.add('active');
+    });
+    document.addEventListener('mouseleave', () => glow.classList.remove('active'));
+
+    // === Cartoon covers eyes on typing ===
+    const inputs = document.querySelectorAll('input, textarea');
+    const cartoonWrap = document.getElementById('cartoonWrap');
+    inputs.forEach(inp => {
+      inp.addEventListener('focus', () => cartoonWrap.classList.add('typing-active'));
+      inp.addEventListener('blur', () => cartoonWrap.classList.remove('typing-active'));
+    });
+    // Also trigger on any form interaction
+    document.addEventListener('keydown', (e) => {
+      if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
+        cartoonWrap.classList.add('typing-active');
+      }
+    });
+    document.addEventListener('keyup', (e) => {
+      if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
+        cartoonWrap.classList.remove('typing-active');
+      }
+    });
+
+    // === 3D WebGL background ===
+    const sketch = (p) => {
+      let pts = [];
+      p.setup = function() {
+        const c = p.createCanvas(p.windowWidth, p.windowHeight, p.WEBGL);
+        c.parent('canvas-container');
+        p.pixelDensity(1);
+        for (let i = 0; i < 2200; i++) {
+          pts.push({
+            x: p.random(-p.width*0.65, p.width*0.65),
+            y: p.random(-p.height*0.65, p.height*0.65),
+            z: p.random(-600, 200),
+            vx: p.random(-0.4, 0.4),
+            vy: p.random(-0.4, 0.4),
+            vz: p.random(-0.3, 0.3),
+            hue: p.random(210, 240), sat: p.random(40, 80),
+          });
+        }
+      };
+      p.draw = function() {
+        p.background(6, 10, 18, 255);
+        p.translate(-p.width/2, -p.height/2);
+        p.rotateY(p.millis()*0.00012);
+        p.rotateX(p.sin(p.millis()*0.00006)*0.06);
+        p.push(); p.translate(0,0,-350); p.noStroke(); p.fill(210,70,70,25); p.sphere(700); p.pop();
+        p.strokeWeight(0.5);
+        for (let i=0;i<pts.length;i++){
+          for(let j=i+1;j<pts.length;j++){
+            const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y, dz=pts[i].z-pts[j].z, d=Math.sqrt(dx*dx+dy*dy+dz*dz);
+            if(d<160){const a=p.map(d,0,160,35,0);p.stroke(pts[i].hue,pts[i].sat,90,a*0.35);p.line(pts[i].x,pts[i].y,pts[i].z,pts[j].x,pts[j].y,pts[j].z);}
+          }
+        }
+        p.noStroke();
+        for(let pt of pts){pt.x+=pt.vx;pt.y+=pt.vy;pt.z+=pt.vz;
+          if(pt.x>p.width*0.55)pt.x=-p.width*0.55; if(pt.x<-p.width*0.55)pt.x=p.width*0.55;
+          if(pt.y>p.height*0.55)pt.y=-p.height*0.55; if(pt.y<-p.height*0.55)pt.y=p.height*0.55;
+          if(pt.z>200)pt.z=-600; if(pt.z<-600)pt.z=200;
+          const b=p.map(pt.z,-600,200,50,100); p.fill(pt.hue,pt.sat,b,80);
+          p.push(); p.translate(pt.x,pt.y,pt.z); p.sphere(pt.z<0?1.4:0.9); p.pop();
+        }
+      };
+      p.windowResized = () => p.resizeCanvas(p.windowWidth, p.windowHeight);
+    };
+    new p5(sketch, 'canvas-container');
+  </script>
+</body>
+</html>

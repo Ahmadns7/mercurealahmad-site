@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "name": "mercurealahmad",
+  "framework": null,
+  "builds": [
+    { "src": "**/*.html", "use": "@vercel/static" },
+    { "src": "logo-mark.png", "use": "@vercel/static" },
+    { "src": "**/*.png", "use": "@vercel/static" },
+    { "src": "**/*.zip", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/index.html" },
+    { "src": "/pages/(.*)", "dest": "/pages/$1" }
+  ],
+  "public": true,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "regions": ["sin1", "iad1"],
+  "env": {
+    "SITE_DOMAIN": "mercurealahmad.qzz.io"
+  }
+}

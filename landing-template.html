@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="canonical" href="https://mercurealahmad.qzz.io/" />
+  <title>MercuReal Tech Solutions — Websites, Software & AI</title>
+  <script>p5.disableFriendlyErrors = true;</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-deep: #070d1a;
+      --bg-card: rgba(255,255,255,0.035);
+      --bg-card-border: rgba(255,255,255,0.07);
+      --text-main: #f3f0eb;
+      --text-muted: rgba(243,240,235,0.55);
+      --accent: #e0b060;
+      --accent-deep: #c49a40;
+      --accent-glow: rgba(224,176,96,0.25);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-main);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Background 3D canvas */
+    #canvas-container { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    #canvas-container canvas { display: block; width: 100vw; height: 100vh; }
+
+    /* Layout */
+    .page {
+      position: relative; z-index: 10;
+      max-width: 640px; margin: 0 auto;
+      padding: 3rem 1.5rem 6rem;
+      display: flex; flex-direction: column; gap: 2.25rem;
+    }
+
+    /* Top glass pill bar */
+    .top-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.35rem 0.35rem 0.35rem 0.35rem;
+      border-radius: 9999px;
+      background: var(--bg-card);
+      border: 1px solid var(--bg-card-border);
+      backdrop-filter: blur(18px) saturate(120%);
+      -webkit-backdrop-filter: blur(18px) saturate(120%);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+    .profile-link {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.2rem 0.4rem 0.2rem 0.2rem;
+      border-radius: 9999px;
+      text-decoration: none; color: var(--text-main);
+      transition: background 0.25s ease;
+    }
+    .profile-link:hover { background: rgba(255,255,255,0.05); }
+    .avatar-wrap {
+      width: 36px; height: 36px; border-radius: 50%; overflow: hidden;
+      border: 1.5px solid rgba(255,255,255,0.12); box-shadow: 0 0 0 2px rgba(255,255,255,0.04);
+      flex-shrink: 0;
+    }
+    .avatar-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .brand-name-text {
+      font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1rem;
+      letter-spacing: -0.02em; color: var(--text-main);
+    }
+    .top-actions {
+      display: flex; align-items: center; gap: 0.35rem;
+    }
+    .icon-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      border: 1px solid var(--bg-card-border); background: rgba(255,255,255,0.04);
+      color: var(--text-main); text-decoration: none; transition: all 0.25s ease;
+    }
+    .icon-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.18); }
+    .icon-btn svg { width: 18px; height: 18px; }
+
+    /* Tag pill */
+    .tag-pill {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.55rem 1.1rem; border-radius: 9999px;
+      background: var(--bg-card); border: 1px solid var(--bg-card-border);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      color: var(--text-muted); font-size: 0.85rem; letter-spacing: 0.01em; font-weight: 400;
+    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent-glow); flex-shrink: 0; }
+
+    /* Hero heading */
+    .hero h1 {
+      font-family: 'Outfit', sans-serif; font-weight: 800; font-size: clamp(2.8rem, 10vw, 5.2rem);
+      line-height: 1.02; letter-spacing: -0.04em; color: var(--text-main); text-wrap: balance;
+      text-shadow: 0 4px 60px rgba(224,176,96,0.15);
+    }
+    .hero h1 .accent-word { color: var(--accent); text-shadow: 0 2px 30px var(--accent-glow); }
+    .hero .subtitle {
+      color: var(--text-muted); font-size: 1.05rem; line-height: 1.55; max-width: 540px; text-wrap: pretty;
+      font-weight: 300;
+    }
+
+    /* Buttons */
+    .cta-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+      padding: 0.85rem 1.8rem; border-radius: 9999px; font-family: 'Outfit', sans-serif;
+      font-weight: 600; font-size: 0.92rem; letter-spacing: -0.01em;
+      text-decoration: none; transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      border: 1px solid transparent;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
+      color: #0b0d14; border-color: transparent;
+      box-shadow: 0 8px 28px rgba(224,176,96,0.35), inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px); box-shadow: 0 16px 40px rgba(224,176,96,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
+    }
+    .btn-secondary {
+      background: var(--bg-card); color: var(--text-main);
+      border-color: var(--bg-card-border);
+    }
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); transform: translateY(-2px);
+    }
+
+    /* Feature checklist */
+    .features { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem 1.25rem; }
+    .feature { display: flex; align-items: center; gap: 0.55rem; color: var(--text-main); font-size: 0.9rem; font-weight: 400; }
+    .feature svg { width: 16px; height: 16px; color: var(--accent); flex-shrink: 0; }
+
+    /* Footer socials */
+    .socials { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+    .socials a {
+      color: var(--text-muted); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase;
+      transition: color 0.2s; position: relative;
+    }
+    .socials a:hover { color: var(--text-main); }
+    .socials a::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1px; background:var(--accent); transition:width 0.3s ease; }
+    .socials a:hover::after { width:100%; }
+
+    /* Mobile */
+    @media (max-width: 520px) {
+      .page { padding: 2rem 1.15rem 4rem; gap: 1.75rem; }
+      .hero h1 { font-size: 2.8rem; }
+      .features { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 3D immersive background -->
+  <div id="canvas-container"></div>
+
+  <main class="page" aria-label="MercuReal landing page">
+
+    <!-- Glass top bar -->
+    <nav class="top-bar" aria-label="Brand and actions">
+      <a href="#" class="profile-link" aria-label="MercuReal home">
+        <span class="avatar-wrap" aria-hidden="true">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=face&q=80" alt="" loading="eager" />
+        </span>
+        <span class="brand-name-text">MercuReal</span>
+      </a>
+      <div class="top-actions" aria-label="Theme and menu">
+        <a href="#" class="icon-btn" aria-label="Toggle theme" title="Theme">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42m12.72-12.72l1.42-1.42"/></svg>
+        </a>
+        <a href="#" class="icon-btn" aria-label="Menu" title="Menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Tag pill -->
+    <div class="tag-pill" aria-label="Tagline">
+      <span class="dot" aria-hidden="true"></span>
+      Digital systems for a smarter future
+    </div>
+
+    <!-- Hero -->
+    <section class="hero" aria-label="Headline">
+      <h1>Websites, software and AI systems for ambitious <span class="accent-word">businesses</span></h1>
+      <p class="subtitle">Technology, software and digital solutions designed to help ambitious businesses operate smarter, grow faster, and compete in a digital world — a digital place for all.</p>
+
+      <nav class="cta-row" aria-label="Contact actions">
+        <a class="btn btn-primary" href="mailto:sadiqahmadnasir7@gmail.com" aria-label="Email sadiqahmadnasir7@gmail.com">
+          Start a project
+        </a>
+        <a class="btn btn-secondary" href="https://wa.me/2347083947529" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp message on +2347083947529">
+          Explore capabilities
+        </a>
+      </nav>
+    </section>
+
+    <!-- Feature checklist -->
+    <section class="features" aria-label="Capabilities">
+      <div class="feature" aria-label="Product-minded">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        Product-minded
+      </div>
+      <div class="feature" aria-label="Built to scale">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        Built to scale
+      </div>
+      <div class="feature" aria-label="Human-led">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        Human-led
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer aria-label="Social links">
+      <nav class="socials" aria-label="Social links">
+        <a href="#" aria-label="Portfolio">Portfolio</a>
+        <a href="#" aria-label="GitHub">GitHub</a>
+        <a href="#" aria-label="LinkedIn">LinkedIn</a>
+        <a href="#" aria-label="Instagram">Instagram</a>
+      </nav>
+    </footer>
+
+  </main>
+
+  <script>
+    // Immersive 3D dark sphere / particle field behind glass cards
+    const sketch = (p) => {
+      let pts = [];
+      let seed;
+
+      p.setup = function() {
+        const c = p.createCanvas(p.windowWidth, p.windowHeight, p.WEBGL);
+        c.parent('canvas-container');
+        p.pixelDensity(1);
+        seed = floor(p.random(99999));
+        p.randomSeed(seed);
+        p.noiseSeed(seed);
+
+        for (let i = 0; i < 2200; i++) {
+          pts.push({
+            x: p.random(-p.width * 0.65, p.width * 0.65),
+            y: p.random(-p.height * 0.65, p.height * 0.65),
+            z: p.random(-600, 200),
+            vx: p.random(-0.4, 0.4),
+            vy: p.random(-0.4, 0.4),
+            vz: p.random(-0.3, 0.3),
+            hue: p.random(200, 240), // cool navy-blue glow
+            sat: p.random(40, 80),
+          });
+        }
+      };
+
+      p.draw = function() {
+        p.background(7, 13, 26, 255);
+        p.translate(-p.width / 2, -p.height / 2);
+        // Slow cinematic rotation
+        p.rotateY(p.millis() * 0.00012);
+        p.rotateX(p.sin(p.millis() * 0.00006) * 0.06);
+
+        // Large ambient glow orbs
+        p.push();
+        p.translate(0, 0, -350);
+        p.noStroke();
+        p.fill(210, 70, 70, 25);
+        p.sphere(700);
+        p.pop();
+
+        // Lines between close particles (glass-like connections)
+        p.strokeWeight(0.5);
+        for (let i = 0; i < pts.length; i++) {
+          for (let j = i + 1; j < pts.length; j++) {
+            const dx = pts[i].x - pts[j].x;
+            const dy = pts[i].y - pts[j].y;
+            const dz = pts[i].z - pts[j].z;
+            const d = Math.sqrt(dx * dx + dy * dy + dz * dz);
+            if (d < 160) {
+              const a = p.map(d, 0, 160, 35, 0);
+              p.stroke(pts[i].hue, pts[i].sat, 90, a * 0.35);
+              p.line(pts[i].x, pts[i].y, pts[i].z, pts[j].x, pts[j].y, pts[j].z);
+            }
+          }
+        }
+
+        // Particles as glowing spheres
+        p.noStroke();
+        for (let pt of pts) {
+          pt.x += pt.vx; pt.y += pt.vy; pt.z += pt.vz;
+          if (pt.x > p.width * 0.55) pt.x = -p.width * 0.55;
+          if (pt.x < -p.width * 0.55) pt.x = p.width * 0.55;
+          if (pt.y > p.height * 0.55) pt.y = -p.height * 0.55;
+          if (pt.y < -p.height * 0.55) pt.y = p.height * 0.55;
+          if (pt.z > 200) pt.z = -600; if (pt.z < -600) pt.z = 200;
+
+          const b = p.map(pt.z, -600, 200, 50, 100);
+          p.fill(pt.hue, pt.sat, b, 80);
+          p.push();
+          p.translate(pt.x, pt.y, pt.z);
+          p.sphere(pt.z < 0 ? 1.4 : 0.9);
+          p.pop();
+        }
+      };
+
+      p.windowResized = function() { p.resizeCanvas(p.windowWidth, p.windowHeight); };
+    };
+    new p5(sketch, 'canvas-container');
+  </script>
+</body>
+</html>
